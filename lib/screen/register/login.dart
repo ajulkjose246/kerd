@@ -15,7 +15,7 @@ class _loginScreenState extends State<loginScreen> {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            const SizedBox(height: 60),
+            // const SizedBox(height: 10),
             const Center(
               child: Text(
                 'Login Now',
@@ -23,8 +23,8 @@ class _loginScreenState extends State<loginScreen> {
               ),
             ),
             Image.network(
-                "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/login.png?alt=media&token=91570bfc-6552-4e52-805b-173bf34ba900"),
-            const SizedBox(height: 30),
+                "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/Login.png?alt=media&token=ce759398-c685-4a68-9270-35c2a70c8a8f"),
+            // const SizedBox(height: 30),
             const TextField(
               // controller: _emailController,
               decoration: InputDecoration(
@@ -51,17 +51,17 @@ class _loginScreenState extends State<loginScreen> {
               },
               child: const Text('Login'),
             ),
-            const SizedBox(height: 5),
+            // const SizedBox(height: 5),
             TextButton(
               onPressed: () {
                 // TODO: Implement forgot password logic here
               },
               child: const Text('Forgot Password?'),
             ),
-            const SizedBox(height: 5),
+            // const SizedBox(height: 5),
             TextButton(
               onPressed: () {
-                // TODO: Implement register logic here
+                Navigator.pushNamed(context, '/register');
               },
               child: const Text('Create New Account'),
             ),
