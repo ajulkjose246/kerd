@@ -1,8 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kerd/screen/home/home.dart';
+import 'package:kerd/screen/register/auth.dart';
 import 'package:kerd/screen/register/login.dart';
 import 'package:kerd/screen/register/register.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(kerd());
 }
 
@@ -19,9 +24,12 @@ class _kerdState extends State<kerd> {
     return MaterialApp(
       title: "KERD",
       routes: {
-        "/": (context) => loginScreen(),
+        "/": (context) => HomeScreen(),
+        "/auth": (context) => authScreen(),
+        "/login": (context) => loginScreen(),
         "/register": (context) => registerScreen(),
       },
+      initialRoute: "/auth",
     );
   }
 }

@@ -31,7 +31,13 @@ class _registerScreenState extends State<registerScreen> {
             const TextField(
               // controller: _emailController,
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 2,
+                      color: Colors.green), // Replace with your desired color
+                ),
                 labelText: 'Full Name',
+                labelStyle: TextStyle(color: Colors.green),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -39,7 +45,13 @@ class _registerScreenState extends State<registerScreen> {
             const TextField(
               // controller: _emailController,
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 2,
+                      color: Colors.green), // Replace with your desired color
+                ),
                 labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.green),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -47,7 +59,13 @@ class _registerScreenState extends State<registerScreen> {
             const TextField(
               // controller: _passwordController,
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 2,
+                      color: Colors.green), // Replace with your desired color
+                ),
                 labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.green),
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
@@ -67,9 +85,12 @@ class _registerScreenState extends State<registerScreen> {
             // const SizedBox(height: 5),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/login');
               },
-              child: const Text('Already have an account?'),
+              child: const Text(
+                'Already have an account?',
+                style: TextStyle(color: Colors.green),
+              ),
             ),
           ],
         ),
