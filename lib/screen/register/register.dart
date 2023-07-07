@@ -54,6 +54,8 @@ class _registerScreenState extends State<registerScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
                 // TODO: Perform login logic here
                 // String email = _emailController.text;

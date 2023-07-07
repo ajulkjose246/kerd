@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "28756653445",
+    "project_id": "kerd-app",
+    "storage_bucket": "kerd-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28756653445:android:9c169552b3b07998a940ec",
+        "android_client_info": {
+          "package_name": "com.example.kerd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28756653445-d2psi2uea2n1dv4agdrc1q6elh9lmtl4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT4z7CDLymADvESXfXhn1lB7xwrFUj4Yk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28756653445-d2psi2uea2n1dv4agdrc1q6elh9lmtl4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
