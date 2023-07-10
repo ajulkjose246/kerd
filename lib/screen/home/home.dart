@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kerd/screen/home/addCard.dart';
 import 'package:kerd/screen/home/cardType.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,6 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       Navigator.pushNamed(context, '/auth');
     }
+  }
+
+  void copyContent() {
+    Fluttertoast.showToast(
+        msg: "Copy",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 10.0);
   }
 
   @override
@@ -106,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         padding: EdgeInsets.all(16),
                         width: 400,
-                        height: 180,
+                        height: 220,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -126,15 +139,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 16),
-                            Text(
-                              cardData['cardNumber'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
+                            SizedBox(height: 1),
+                            Image.network(
+                                height: 50, // Set the desired height
+                                "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/atm.png?alt=media&token=5f37b555-00ff-42a6-830a-5379f1fb4538"),
+                            Row(
+                              children: [
+                                Text(
+                                  cardData['cardNumber'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(
+                                          text: cardData['cardNumber']));
+                                      copyContent();
+                                    },
+                                    icon: Icon(
+                                      Icons.copy,
+                                      size: 25,
+                                    ))
+                              ],
                             ),
-                            SizedBox(height: 16),
+                            SizedBox(height: 1),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -148,12 +178,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Colors.grey,
                                       ),
                                     ),
-                                    Text(
-                                      cardData['cardHolder'],
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          cardData['cardHolder'],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              Clipboard.setData(ClipboardData(
+                                                  text:
+                                                      cardData['cardHolder']));
+                                              copyContent();
+                                            },
+                                            icon: Icon(
+                                              Icons.copy,
+                                              size: 20,
+                                            ))
+                                      ],
+                                    )
                                   ],
                                 ),
                                 Column(
@@ -166,12 +211,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Colors.grey,
                                       ),
                                     ),
-                                    Text(
-                                      cardData['cardExp'],
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          cardData['cardExp'],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              Clipboard.setData(ClipboardData(
+                                                  text: cardData['cardExp']));
+                                              copyContent();
+                                            },
+                                            icon: Icon(
+                                              Icons.copy,
+                                              size: 20,
+                                            ))
+                                      ],
+                                    )
                                   ],
                                 ),
                               ],
