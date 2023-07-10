@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kerd/screen/home/addCard.dart';
 import 'package:kerd/screen/home/home.dart';
 import 'package:kerd/screen/register/auth.dart';
 import 'package:kerd/screen/register/login.dart';
@@ -28,6 +29,7 @@ class _kerdState extends State<kerd> {
         "/auth": (context) => authScreen(),
         "/login": (context) => loginScreen(),
         "/register": (context) => registerScreen(),
+        "/addCard": (context) => addCardScreen(),
       },
       initialRoute: "/auth",
     );
