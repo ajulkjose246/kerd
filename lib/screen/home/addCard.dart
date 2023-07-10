@@ -15,8 +15,11 @@ final user = FirebaseAuth.instance.currentUser;
 final CollectionReference cards =
     FirebaseFirestore.instance.collection("cards");
 TextEditingController cardNumber = TextEditingController();
+TextEditingController cardName = TextEditingController();
 TextEditingController cardHolder = TextEditingController();
 TextEditingController cardExp = TextEditingController();
+TextEditingController cardPin = TextEditingController();
+TextEditingController cardCvv = TextEditingController();
 
 class _addCardScreenState extends State<addCardScreen> {
   @override
@@ -24,8 +27,11 @@ class _addCardScreenState extends State<addCardScreen> {
     void addCard() {
       final data = {
         'cardExp': cardExp.text,
+        'cardName': cardName.text,
         'cardHolder': cardHolder.text,
         'cardNumber': cardNumber.text,
+        'cardPin': cardPin.text,
+        'cardCvv': cardCvv.text,
         'user': user!.email,
       };
       cards.add(data).then((_) {
@@ -71,6 +77,23 @@ class _addCardScreenState extends State<addCardScreen> {
         Padding(
           padding: const EdgeInsets.all(10),
           child: TextField(
+            controller: cardName,
+            keyboardType: TextInputType.text,
+            decoration: const InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.green), // Replace with your desired color
+              ),
+              labelText: 'Card Name',
+              labelStyle: TextStyle(color: Colors.green),
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
             controller: cardNumber,
             keyboardType: TextInputType.number,
             maxLength: 16,
@@ -92,7 +115,7 @@ class _addCardScreenState extends State<addCardScreen> {
             controller: cardHolder,
             keyboardType: TextInputType.text,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
             ],
             decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(
@@ -124,6 +147,42 @@ class _addCardScreenState extends State<addCardScreen> {
           ),
         ),
         Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            controller: cardPin,
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            decoration: const InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.green), // Replace with your desired color
+              ),
+              labelText: 'Card Pin',
+              labelStyle: TextStyle(color: Colors.green),
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            controller: cardCvv,
+            keyboardType: TextInputType.number,
+            maxLength: 4,
+            decoration: const InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    width: 2,
+                    color: Colors.green), // Replace with your desired color
+              ),
+              labelText: 'CVV',
+              labelStyle: TextStyle(color: Colors.green),
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.all(15.0),
           child: ElevatedButton(
             onPressed: () {
@@ -133,7 +192,7 @@ class _addCardScreenState extends State<addCardScreen> {
             style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(Colors.green)),
           ),
-        )
+        ),
       ]),
     );
   }
