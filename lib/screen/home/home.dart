@@ -84,13 +84,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Container(
                     padding: const EdgeInsets.all(10.0),
                     child: Card(
+                      color: Colors.orangeAccent,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Container(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          gradient: LinearGradient(
+                              colors: [
+                                const Color(0xfffcdf8a),
+                                const Color(0xfff38381),
+                              ],
+                              begin: const FractionalOffset(0.0, 0.0),
+                              end: const FractionalOffset(1.0, 0.0),
+                              stops: [0.0, 1.0],
+                              tileMode: TileMode.clamp),
+                        ),
                         padding: EdgeInsets.all(16),
-                        width: 300,
+                        width: 400,
                         height: 180,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
