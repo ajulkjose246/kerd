@@ -43,15 +43,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void copyContent() {
+  void copyContent(String content) {
+    Clipboard.setData(ClipboardData(text: content));
     Fluttertoast.showToast(
-        msg: "Copy",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 10.0);
+      msg: "Copied to clipboard",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 10.0,
+    );
+  }
+
+  final CollectionReference cards =
+      FirebaseFirestore.instance.collection("cards");
+
+  void cardDelete(id) {
+    cards.doc(id).delete();
+    Navigator.pushNamed(context, '/auth');
   }
 
   @override
@@ -94,20 +104,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 final cardData = cards[index];
                 if (cardData['user'] == user!.email) {
                   String cardType = getCardType(cardData['cardNumber']);
-                  return Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Card(
-                      color: Colors.orangeAccent,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          gradient: LinearGradient(
+                  return GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: Text("Card Options"),
+                          // content: Text("Long press options for the card"),
+                          actions: [
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(Colors.red)),
+                                onPressed: () {
+                                  cardDelete(cardData.id);
+                                },
+                                child: Text("Delete")),
+                            // ElevatedButton(
+                            //     onPressed: () {}, child: Text("Edit")),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Card(
+                        color: Colors.orangeAccent,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            gradient: LinearGradient(
                               colors: [
                                 const Color(0xfffcdf8a),
                                 const Color(0xfff38381),
@@ -115,127 +147,132 @@ class _HomeScreenState extends State<HomeScreen> {
                               begin: const FractionalOffset(0.0, 0.0),
                               end: const FractionalOffset(1.0, 0.0),
                               stops: [0.0, 1.0],
-                              tileMode: TileMode.clamp),
-                        ),
-                        padding: EdgeInsets.all(16),
-                        width: 400,
-                        height: 220,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  cardData['cardName'],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  cardType,
-                                  style: TextStyle(fontWeight: FontWeight.w500),
-                                )
-                              ],
+                              tileMode: TileMode.clamp,
                             ),
-                            SizedBox(height: 1),
-                            Image.network(
-                                height: 50, // Set the desired height
-                                "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/atm.png?alt=media&token=5f37b555-00ff-42a6-830a-5379f1fb4538"),
-                            Row(
-                              children: [
-                                Text(
-                                  cardData['cardNumber'],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                          ),
+                          padding: EdgeInsets.all(16),
+                          width: 400,
+                          height: 220,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    cardData['cardName'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                ),
-                                IconButton(
+                                  Text(
+                                    cardType,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 1),
+                              Image.network(
+                                height: 50, // Set the desired height
+                                "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/atm.png?alt=media&token=5f37b555-00ff-42a6-830a-5379f1fb4538",
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    cardData['cardNumber'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  IconButton(
                                     onPressed: () {
-                                      Clipboard.setData(ClipboardData(
-                                          text: cardData['cardNumber']));
-                                      copyContent();
+                                      copyContent(cardData['cardNumber']);
                                     },
                                     icon: Icon(
                                       Icons.copy,
                                       size: 25,
-                                    ))
-                              ],
-                            ),
-                            SizedBox(height: 1),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Cardholder Name',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          cardData['cardHolder'],
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                          ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 1),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Cardholder Name',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey,
                                         ),
-                                        IconButton(
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            cardData['cardHolder'],
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          IconButton(
                                             onPressed: () {
-                                              Clipboard.setData(ClipboardData(
-                                                  text:
-                                                      cardData['cardHolder']));
-                                              copyContent();
+                                              copyContent(
+                                                  cardData['cardHolder']);
                                             },
                                             icon: Icon(
                                               Icons.copy,
                                               size: 20,
-                                            ))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Expiry Date',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          cardData['cardExp'],
-                                          style: TextStyle(
-                                            fontSize: 16,
+                                            ),
                                           ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Expiry Date',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey,
                                         ),
-                                        IconButton(
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            cardData['cardExp'],
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          IconButton(
                                             onPressed: () {
-                                              Clipboard.setData(ClipboardData(
-                                                  text: cardData['cardExp']));
-                                              copyContent();
+                                              copyContent(cardData['cardExp']);
                                             },
                                             icon: Icon(
                                               Icons.copy,
                                               size: 20,
-                                            ))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

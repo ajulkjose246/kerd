@@ -11,7 +11,8 @@ String getCardType(String cardNumber) {
   RegExp discoverPattern = RegExp(r'^6(?:011|5[0-9]{2})[0-9]{12}$');
   RegExp dinersClubPattern = RegExp(r'^3(?:0[0-5]|[68][0-9])[0-9]{11}$');
   RegExp jcbPattern = RegExp(r'^(?:2131|1800|35[0-9]{3})[0-9]{11}$');
-  RegExp rupayPattern = RegExp(r'^6[0-9]{15}$');
+  // RegExp rupayPattern = RegExp(r'^6[0-9]{15}$');
+  RegExp rupayPattern = RegExp(r'^(5|6)[0-9]{14}$');
 
   // Check the card number against each pattern and return the corresponding card type
   if (visaPattern.hasMatch(cleanedNumber)) {
