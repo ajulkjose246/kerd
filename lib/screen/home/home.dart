@@ -121,8 +121,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                     cardDelete(cardData.id);
                                   },
                                   child: Text("Delete")),
-                              // ElevatedButton(
-                              //     onPressed: () {}, child: Text("Edit")),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "/editCard",
+                                        arguments: {
+                                          "cardName": cardData['cardName'],
+                                          "cardCvv": cardData['cardCvv'],
+                                          "cardExp": cardData['cardExp'],
+                                          "cardHolder": cardData['cardHolder'],
+                                          "cardNumber": cardData['cardNumber'],
+                                          "cardPin": cardData['cardPin'],
+                                          "UId": cardData.id,
+                                        });
+                                  },
+                                  child: Text("Edit")),
                             ],
                           ),
                         );
