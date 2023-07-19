@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kerd/screen/home/addCard.dart';
 
 class registerScreen extends StatefulWidget {
   const registerScreen({super.key});
@@ -39,7 +38,11 @@ class _registerScreenState extends State<registerScreen> {
               textColor: Colors.white,
               fontSize: 10.0,
             );
-            Navigator.pushNamed(context, '/auth');
+            // Navigator.pushNamed(context, '/auth');
+            // Navigator.pushAndRemoveUntil(
+            //     context, "/auth" as Route<Object?>, (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/auth', (route) => false);
           } else {
             // Handle unsuccessful registration
             Fluttertoast.showToast(

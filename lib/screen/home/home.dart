@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
   void usrLogout() {
     FirebaseAuth.instance.signOut();
     checkCurrentUser();
+    Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
   }
 
   void addCard() {
@@ -56,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen>
       print("card Added");
       Navigator.pushNamed(context, '/addCard');
     } else {
-      Navigator.pushNamed(context, '/auth');
+      // Navigator.pushNamed(context, '/auth');
+      Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
     }
   }
 
@@ -109,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen>
             : [
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/auth');
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/auth", (route) => false);
                   },
                   icon: Icon(Icons.login),
                 ),
@@ -198,6 +201,7 @@ class _HomeScreenState extends State<HomeScreen>
                     );
                   }
                 }
+                return null;
               },
             );
           }
@@ -213,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             const Color(0xfffcdf8a),
             const Color(0xfff38381),
@@ -345,44 +349,73 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget buildBackCard(cardData) {
-    return Container(
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+    return AnimatedOpacity(
+      opacity: _isCardFlipped ? 1.0 : 0.0,
+      duration: Duration(milliseconds: 500),
+      child: Container(
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xfff38381),
+              const Color(0xfffcdf8a),
+            ],
+            begin: const FractionalOffset(0.0, 0.0),
+            end: const FractionalOffset(1.0, 0.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
+          ),
         ),
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xfff38381),
-            const Color(0xfffcdf8a),
+        padding: EdgeInsets.only(top: 20),
+        width: 400,
+        height: 220,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 40,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      "CVV : " + cardData['cardCvv'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          copyContent(cardData['cardCvv']);
+                        },
+                        icon: Icon(Icons.copy))
+                  ],
+                )),
+            Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      "PIN : " + cardData['cardPin'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          copyContent(cardData['cardPin']);
+                        },
+                        icon: Icon(Icons.copy))
+                  ],
+                )),
           ],
-          begin: const FractionalOffset(0.0, 0.0),
-          end: const FractionalOffset(1.0, 0.0),
-          stops: [0.0, 1.0],
-          tileMode: TileMode.clamp,
         ),
-      ),
-      padding: EdgeInsets.all(16),
-      width: 400,
-      height: 220,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'CVV',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 1),
-          Text(
-            cardData['cardCvv'],
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-        ],
       ),
     );
   }
