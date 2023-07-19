@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen>
   late User? _currentUser;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  bool _isCardFlipped = false;
+  int _swipedCardIndex = -1;
 
   @override
   void initState() {
@@ -80,18 +80,17 @@ class _HomeScreenState extends State<HomeScreen>
 
   void cardDelete(id) {
     cards.doc(id).delete();
-    Navigator.pushNamed(context, '/auth');
+    Navigator.pop(context, '/auth');
   }
 
-  void flipCard() {
-    if (_isCardFlipped) {
+  void flipCard(int index) {
+    if (_swipedCardIndex == index) {
       _animationController.reverse();
+      _swipedCardIndex = -1;
     } else {
       _animationController.forward();
+      _swipedCardIndex = index;
     }
-    setState(() {
-      _isCardFlipped = !_isCardFlipped;
-    });
   }
 
   @override
@@ -139,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen>
                     return GestureDetector(
                       onHorizontalDragEnd: (details) {
                         if (details.primaryVelocity! < 0) {
-                          flipCard();
+                          flipCard(index);
                         }
                       },
                       onLongPress: () {
@@ -147,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen>
                           context: context,
                           builder: (_) => AlertDialog(
                             title: Text("Card Options"),
-                            // content: Text("Long press options for the card"),
                             actions: [
                               ElevatedButton(
                                   style: ButtonStyle(
@@ -179,8 +177,10 @@ class _HomeScreenState extends State<HomeScreen>
                         animation: _animation,
                         builder: (context, child) {
                           final value = _animation.value;
-                          final frontOpacity = 1 - value;
-                          final backOpacity = value;
+                          final frontOpacity =
+                              _swipedCardIndex == index ? 1.0 - value : 1.0;
+                          final backOpacity =
+                              _swipedCardIndex == index ? value : 0.0;
                           return Container(
                             padding: const EdgeInsets.all(10.0),
                             child: Stack(
@@ -201,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen>
                     );
                   }
                 }
-                return null;
+                return Container();
               },
             );
           }
@@ -350,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget buildBackCard(cardData) {
     return AnimatedOpacity(
-      opacity: _isCardFlipped ? 1.0 : 0.0,
+      opacity: _swipedCardIndex >= 0 ? 1.0 : 0.0,
       duration: Duration(milliseconds: 500),
       child: Container(
         decoration: ShapeDecoration(
@@ -379,41 +379,45 @@ class _HomeScreenState extends State<HomeScreen>
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      "CVV : " + cardData['cardCvv'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+              child: Row(
+                children: [
+                  Text(
+                    "CVV : " + cardData['cardCvv'],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                    IconButton(
-                        onPressed: () {
-                          copyContent(cardData['cardCvv']);
-                        },
-                        icon: Icon(Icons.copy))
-                  ],
-                )),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      copyContent(cardData['cardCvv']);
+                    },
+                    icon: Icon(Icons.copy),
+                  ),
+                ],
+              ),
+            ),
             Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      "PIN : " + cardData['cardPin'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Row(
+                children: [
+                  Text(
+                    "PIN : " + cardData['cardPin'],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                    IconButton(
-                        onPressed: () {
-                          copyContent(cardData['cardPin']);
-                        },
-                        icon: Icon(Icons.copy))
-                  ],
-                )),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      copyContent(cardData['cardPin']);
+                    },
+                    icon: Icon(Icons.copy),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -45,7 +45,7 @@ class _addCardScreenState extends State<addCardScreen> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 10.0);
-        Navigator.pushNamed(context, '/auth');
+        Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
       }).catchError((error) {
         // Insertion failed
         print('Error inserting data: $error');
