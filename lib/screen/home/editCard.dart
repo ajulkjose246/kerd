@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class editCardScreen extends StatefulWidget {
   const editCardScreen({super.key});
@@ -47,26 +48,21 @@ class _editCardScreenState extends State<editCardScreen> {
       cards.doc(UId).update(data).then((_) {
         // Insertion successful
         print('Data inserted successfully');
-        Fluttertoast.showToast(
-            msg: "Card Added successful",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 10.0);
-        Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          text: "Card Edited successful",
+        ).then((value) {
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        });
       }).catchError((error) {
         // Insertion failed
         print('Error inserting data: $error');
-        Fluttertoast.showToast(
-            msg: "Card Added Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 10.0);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Card Edited Failed",
+        );
       });
     }
 

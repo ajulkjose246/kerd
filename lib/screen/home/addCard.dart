@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class addCardScreen extends StatefulWidget {
   const addCardScreen({super.key});
@@ -37,26 +37,21 @@ class _addCardScreenState extends State<addCardScreen> {
       cards.add(data).then((_) {
         // Insertion successful
         print('Data inserted successfully');
-        Fluttertoast.showToast(
-            msg: "Card Added successful",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 10.0);
-        Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          text: "Card Added successful",
+        ).then((value) {
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        });
       }).catchError((error) {
         // Insertion failed
         print('Error inserting data: $error');
-        Fluttertoast.showToast(
-            msg: "Card Added Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 10.0);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Card Added Failed",
+        );
       });
     }
 

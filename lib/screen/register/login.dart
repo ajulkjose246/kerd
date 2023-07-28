@@ -31,8 +31,7 @@ class _loginScreenState extends State<loginScreen> {
             type: QuickAlertType.success,
             text: 'Login Successfull!',
           ).then((value) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, "/auth", (route) => false);
+            Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
           });
         } else {
           // ignore: use_build_context_synchronously

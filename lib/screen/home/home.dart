@@ -46,10 +46,33 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void usrLogout() {
+  void usrLogout() async {
     FirebaseAuth.instance.signOut();
+    await clearUserData(); // Call a function to clear user data from Firestore
     checkCurrentUser();
     Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
+  }
+
+// Function to clear user data from Firestore
+  Future<void> clearUserData() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        // Get a reference to the Firestore collection for user's cards
+        CollectionReference userCards =
+            FirebaseFirestore.instance.collection("cards");
+
+        // Query and delete all documents where the 'user' field matches the current user's email
+        QuerySnapshot snapshot =
+            await userCards.where("user", isEqualTo: currentUser.email).get();
+        for (DocumentSnapshot doc in snapshot.docs) {
+          await doc.reference.delete();
+        }
+      }
+    } catch (e) {
+      print("Error clearing user data: $e");
+      // Handle any errors that occur during the data clearing process
+    }
   }
 
   void addCard() {

@@ -35,8 +35,7 @@ class _registerScreenState extends State<registerScreen> {
               type: QuickAlertType.success,
               text: "Registration Successful!",
             ).then((value) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/auth', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
             });
           } else {
             // ignore: use_build_context_synchronously
