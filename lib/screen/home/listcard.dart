@@ -165,55 +165,6 @@ class _listScreenState extends State<listScreen>
                         }
                       }
                     },
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: Text("Card Options"),
-                          actions: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(Colors.green)),
-                                onPressed: () {
-                                  flipCard(index);
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Swipe")),
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(Colors.red)),
-                                onPressed: () {
-                                  cardDelete(cardData.id);
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Delete")),
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, "/editCard",
-                                      arguments: {
-                                        "cardName": cardData['cardName'],
-                                        "cardCvv": cardData['cardCvv'],
-                                        "cardExp": cardData['cardExp'],
-                                        "cardHolder": cardData['cardHolder'],
-                                        "cardNumber": cardData['cardNumber'],
-                                        "cardPin": cardData['cardPin'],
-                                        "UId": cardData.id,
-                                      });
-                                },
-                                child: Text("Edit")),
-                            // ElevatedButton(
-                            //     onPressed: () {
-                            //       likeCard(cardData.id);
-                            //       Navigator.pop(context);
-                            //     },
-                            //     child: Text("Like")),
-                          ],
-                        ),
-                      );
-                    },
                     child: AnimatedBuilder(
                       animation: _animation,
                       builder: (context, child) {
@@ -454,13 +405,25 @@ class _listScreenState extends State<listScreen>
                         color: Colors.white,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/editCard", arguments: {
+                          "cardName": cardData['cardName'],
+                          "cardCvv": cardData['cardCvv'],
+                          "cardExp": cardData['cardExp'],
+                          "cardHolder": cardData['cardHolder'],
+                          "cardNumber": cardData['cardNumber'],
+                          "cardPin": cardData['cardPin'],
+                          "UId": cardData.id,
+                        });
+                      },
                       icon: Icon(
                         Icons.edit,
                         color: Colors.blue,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cardDelete(cardData.id);
+                      },
                       icon: Icon(
                         Icons.delete,
                         color: Colors.red,
