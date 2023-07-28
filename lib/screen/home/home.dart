@@ -51,10 +51,16 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(230, 234, 237, 1),
       appBar: AppBar(
-          backgroundColor: Colors.green,
+          backgroundColor: Color.fromRGBO(38, 38, 38, 1),
           leading: Icon(Icons.credit_card),
           title: Text("KERD"),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10), // You can adjust the radius here
+            ),
+          ),
           actions: [
             IconButton(
               onPressed: usrLogout,
@@ -64,12 +70,15 @@ class _HomeScreenState extends State<HomeScreen>
       floatingActionButton: FloatingActionButton(
         onPressed: addCard,
         child: Icon(Icons.add_card),
-        backgroundColor: Colors.green,
-        shape: CircleBorder(side: BorderSide(width: 2)),
+        backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+        shape: const CircleBorder(side: BorderSide(width: 2)),
       ),
       body: homeScreens.elementAt(_currentIndex),
       bottomNavigationBar: SalomonBottomBar(
+        // backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
+
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
           /// Home

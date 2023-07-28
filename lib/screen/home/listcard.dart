@@ -225,8 +225,8 @@ class _listScreenState extends State<listScreen>
         ),
         gradient: const LinearGradient(
           colors: [
-            const Color(0xfffcdf8a),
-            const Color(0xfff38381),
+            Color.fromARGB(255, 38, 38, 38),
+            Color.fromARGB(255, 9, 9, 9),
           ],
           begin: const FractionalOffset(0.0, 0.0),
           end: const FractionalOffset(1.0, 0.0),
@@ -246,13 +246,14 @@ class _listScreenState extends State<listScreen>
               Text(
                 cardData['cardName'],
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white),
               ),
               Text(
                 cardType,
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style:
+                    TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
               )
             ],
           ),
@@ -266,18 +267,15 @@ class _listScreenState extends State<listScreen>
               Text(
                 cardData['cardNumber'],
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white),
               ),
               IconButton(
                 onPressed: () {
                   copyContent(cardData['cardNumber']);
                 },
-                icon: Icon(
-                  Icons.copy,
-                  size: 25,
-                ),
+                icon: Icon(Icons.copy, size: 25, color: Colors.white),
               ),
             ],
           ),
@@ -290,27 +288,19 @@ class _listScreenState extends State<listScreen>
                 children: [
                   Text(
                     'Cardholder Name',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
                   Row(
                     children: [
                       Text(
                         cardData['cardHolder'],
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                       IconButton(
                         onPressed: () {
                           copyContent(cardData['cardHolder']);
                         },
-                        icon: Icon(
-                          Icons.copy,
-                          size: 20,
-                        ),
+                        icon: Icon(Icons.copy, size: 20, color: Colors.white),
                       ),
                     ],
                   ),
@@ -321,27 +311,19 @@ class _listScreenState extends State<listScreen>
                 children: [
                   Text(
                     'Expiry Date',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
                   Row(
                     children: [
                       Text(
                         cardData['cardExp'],
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                       IconButton(
                         onPressed: () {
                           copyContent(cardData['cardExp']);
                         },
-                        icon: Icon(
-                          Icons.copy,
-                          size: 20,
-                        ),
+                        icon: Icon(Icons.copy, size: 20, color: Colors.white),
                       ),
                     ],
                   ),
@@ -365,8 +347,8 @@ class _listScreenState extends State<listScreen>
           ),
           gradient: LinearGradient(
             colors: [
-              const Color(0xfff38381),
-              const Color(0xfffcdf8a),
+              Color.fromARGB(255, 33, 30, 30),
+              Color.fromARGB(255, 9, 9, 9),
             ],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(1.0, 0.0),
@@ -382,7 +364,7 @@ class _listScreenState extends State<listScreen>
           children: [
             Container(
               height: 40,
-              color: Colors.black,
+              color: Colors.white,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -391,15 +373,15 @@ class _listScreenState extends State<listScreen>
                   Text(
                     "CVV : " + cardData['cardCvv'],
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.white),
                   ),
                   IconButton(
                     onPressed: () {
                       copyContent(cardData['cardCvv']);
                     },
-                    icon: Icon(Icons.copy),
+                    icon: Icon(Icons.copy, color: Colors.white),
                   ),
                 ],
               ),
@@ -411,15 +393,15 @@ class _listScreenState extends State<listScreen>
                   Text(
                     "PIN : " + cardData['cardPin'],
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.white),
                   ),
                   IconButton(
                     onPressed: () {
                       copyContent(cardData['cardPin']);
                     },
-                    icon: Icon(Icons.copy),
+                    icon: Icon(Icons.copy, color: Colors.white),
                   ),
                 ],
               ),
