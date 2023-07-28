@@ -145,18 +145,29 @@ class _HomeScreenState extends State<HomeScreen>
                         showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                            title: Text("Card Options"),
+                            title: Text("CardOptions"),
                             actions: [
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.green)),
+                                  onPressed: () {
+                                    flipCard(index);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Swipe")),
                               ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStatePropertyAll(Colors.red)),
                                   onPressed: () {
                                     cardDelete(cardData.id);
+                                    Navigator.pop(context);
                                   },
                                   child: Text("Delete")),
                               ElevatedButton(
                                   onPressed: () {
+                                    Navigator.pop(context);
                                     Navigator.pushNamed(context, "/editCard",
                                         arguments: {
                                           "cardName": cardData['cardName'],

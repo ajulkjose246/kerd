@@ -55,7 +55,7 @@ class _editCardScreenState extends State<editCardScreen> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 10.0);
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
       }).catchError((error) {
         // Insertion failed
         print('Error inserting data: $error');
