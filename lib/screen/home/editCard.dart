@@ -139,6 +139,7 @@ class _editCardScreenState extends State<editCardScreen> {
           padding: const EdgeInsets.all(10),
           child: TextField(
             controller: cardExp,
+            maxLength: 5,
             keyboardType: TextInputType.datetime,
             decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(

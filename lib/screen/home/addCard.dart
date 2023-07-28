@@ -129,6 +129,7 @@ class _addCardScreenState extends State<addCardScreen> {
           child: TextField(
             controller: cardExp,
             keyboardType: TextInputType.datetime,
+            maxLength: 5,
             decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
