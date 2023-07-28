@@ -66,7 +66,7 @@ class _addCardScreenState extends State<addCardScreen> {
         title: Text("Add Card"),
       ),
       body: ListView(children: [
-        Center(
+        const Center(
             child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Text(
@@ -189,7 +189,7 @@ class _addCardScreenState extends State<addCardScreen> {
               addCard();
             },
             child: Text("Add Card"),
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(Colors.green)),
           ),
         ),

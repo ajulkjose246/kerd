@@ -1,28 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kerd/screen/home/home.dart';
-import 'package:kerd/screen/register/login.dart';
 
 class authScreen extends StatefulWidget {
-  const authScreen({super.key});
-
   @override
   State<authScreen> createState() => _authScreenState();
 }
 
 class _authScreenState extends State<authScreen> {
   @override
+  void initState() {
+    super.initState();
+    checkUser();
+  }
+
+  void checkUser() async {
+    await Future.delayed(Duration(seconds: 3));
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return HomeScreen();
-          } else {
-            return loginScreen();
-          }
-        },
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "KERD",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: CircularProgressIndicator(),
+            )
+          ],
+        ),
       ),
     );
   }

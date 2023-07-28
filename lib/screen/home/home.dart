@@ -53,13 +53,8 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void addCard() {
-    if (_currentUser != null) {
-      print("card Added");
-      Navigator.pushNamed(context, '/addCard');
-    } else {
-      // Navigator.pushNamed(context, '/auth');
-      Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
-    }
+    print("card Added");
+    Navigator.pushNamed(context, '/addCard');
   }
 
   void copyContent(String content) {
@@ -97,26 +92,15 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: Icon(Icons.credit_card),
-        title: Text("KERD"),
-        actions: _currentUser != null
-            ? [
-                IconButton(
-                  onPressed: usrLogout,
-                  icon: Icon(Icons.exit_to_app),
-                ),
-              ]
-            : [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/auth", (route) => false);
-                  },
-                  icon: Icon(Icons.login),
-                ),
-              ],
-      ),
+          backgroundColor: Colors.green,
+          leading: Icon(Icons.credit_card),
+          title: Text("KERD"),
+          actions: [
+            IconButton(
+              onPressed: usrLogout,
+              icon: Icon(Icons.exit_to_app),
+            ),
+          ]),
       floatingActionButton: FloatingActionButton(
         onPressed: addCard,
         child: Icon(Icons.add_card),
@@ -145,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen>
                         showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                            title: Text("CardOptions"),
+                            title: Text("Card Options"),
                             actions: [
                               ElevatedButton(
                                   style: ButtonStyle(

@@ -38,9 +38,6 @@ class _registerScreenState extends State<registerScreen> {
               textColor: Colors.white,
               fontSize: 10.0,
             );
-            // Navigator.pushNamed(context, '/auth');
-            // Navigator.pushAndRemoveUntil(
-            //     context, "/auth" as Route<Object?>, (route) => false);
             Navigator.pushNamedAndRemoveUntil(
                 context, '/auth', (route) => false);
           } else {
@@ -147,7 +144,7 @@ class _registerScreenState extends State<registerScreen> {
             TextField(
               controller: UCPwd,
               keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                       width: 2,
@@ -161,7 +158,7 @@ class _registerScreenState extends State<registerScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
                 createUser();

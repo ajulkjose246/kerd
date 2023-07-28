@@ -34,6 +34,7 @@ class _loginScreenState extends State<loginScreen> {
               backgroundColor: Colors.green,
               textColor: Colors.white,
               fontSize: 10.0);
+          Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
         } else {
           // Handle unsuccessful login
           Fluttertoast.showToast(
