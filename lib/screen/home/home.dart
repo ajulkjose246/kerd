@@ -121,8 +121,14 @@ class _HomeScreenState extends State<HomeScreen>
                     String cardType = getCardType(cardData['cardNumber']);
                     return GestureDetector(
                       onHorizontalDragEnd: (details) {
-                        if (details.primaryVelocity! < 0) {
-                          flipCard(index);
+                        if (_swipedCardIndex == -1) {
+                          if (details.primaryVelocity! < 0) {
+                            flipCard(index);
+                          }
+                        } else {
+                          if (details.primaryVelocity! > 0) {
+                            flipCard(index);
+                          }
                         }
                       },
                       onLongPress: () {

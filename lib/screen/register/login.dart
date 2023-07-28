@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
@@ -25,59 +25,43 @@ class _loginScreenState extends State<loginScreen> {
         // User login successful
         User? user = userCredential.user;
         if (user != null) {
-          // Handle successful login
-          Fluttertoast.showToast(
-              msg: "Login successful",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 10.0);
-          Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
+          // ignore: use_build_context_synchronously
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: 'Login Successfull!',
+          ).then((value) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/auth", (route) => false);
+          });
         } else {
-          // Handle unsuccessful login
-          Fluttertoast.showToast(
-              msg: "Login failed!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 10.0);
+          // ignore: use_build_context_synchronously
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'Login Failed!',
+          );
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          // Handle user not found error
-          Fluttertoast.showToast(
-              msg: "User not found",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 10.0);
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'User not flund',
+          );
         } else {
-          // Handle other FirebaseAuthException errors
-          Fluttertoast.showToast(
-              msg: "Login error: ${e.code}",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 10.0);
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: "Login error: ${e.code}",
+          );
         }
       } catch (e) {
-        // Handle other errors during login
-        Fluttertoast.showToast(
-            msg: "Login error: $e'",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 10.0);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Login error: $e'",
+        );
       }
     }
 

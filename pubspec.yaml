@@ -43,6 +43,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   flutter_circle_color_picker: ^0.3.0
   flutter_cache_manager: ^3.3.1
+  quickalert: ^1.0.1
 
 
 dev_dependencies:

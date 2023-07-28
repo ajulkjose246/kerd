@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class registerScreen extends StatefulWidget {
   const registerScreen({super.key});
@@ -29,27 +29,21 @@ class _registerScreenState extends State<registerScreen> {
           User? user = userCredential.user;
           if (user != null) {
             // Handle successful registration
-            Fluttertoast.showToast(
-              msg: "Registration successful",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 10.0,
-            );
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/auth', (route) => false);
+            // ignore: use_build_context_synchronously
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              text: "Registration Successful!",
+            ).then((value) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/auth', (route) => false);
+            });
           } else {
-            // Handle unsuccessful registration
-            Fluttertoast.showToast(
-              msg: "Registration failed",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 10.0,
+            // ignore: use_build_context_synchronously
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              text: "Registration failed",
             );
           }
         } catch (e) {
@@ -68,26 +62,17 @@ class _registerScreenState extends State<registerScreen> {
               // Add more cases for other error codes if needed
             }
           }
-
-          Fluttertoast.showToast(
-            msg: errorMessage,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 10.0,
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: errorMessage,
           );
         }
       } else {
-        Fluttertoast.showToast(
-          msg: "Passwords do not match",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 10.0,
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Passwords do not match",
         );
       }
     }
