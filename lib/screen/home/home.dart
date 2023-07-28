@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kerd/screen/home/likedCard.dart';
 import 'package:kerd/screen/home/listcard.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   List homeScreens = const [
     listScreen(),
-    Text("2"),
+    likedScreen(),
     Text("3"),
     Text("4"),
   ];
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>
           /// Likes
           SalomonBottomBarItem(
             icon: Icon(Icons.favorite_border),
-            title: Text("Likes"),
+            title: Text("Liked"),
             selectedColor: Colors.pink,
           ),
 

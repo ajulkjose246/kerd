@@ -3,19 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:quickalert/quickalert.dart';
 import 'cardType.dart';
 
-class listScreen extends StatefulWidget {
-  const listScreen({Key? key}) : super(key: key);
+class likedScreen extends StatefulWidget {
+  const likedScreen({Key? key}) : super(key: key);
 
   @override
-  State<listScreen> createState() => _listScreenState();
+  State<likedScreen> createState() => _likedScreenState();
 }
 
 final user = FirebaseAuth.instance.currentUser;
 
-class _listScreenState extends State<listScreen>
+class _likedScreenState extends State<likedScreen>
     with SingleTickerProviderStateMixin {
   late User? _currentUser;
   late AnimationController _animationController;
@@ -153,92 +152,108 @@ class _listScreenState extends State<listScreen>
               if (_currentUser != null) {
                 if (cardData['user'] == user!.email) {
                   String cardType = getCardType(cardData['cardNumber']);
-                  return GestureDetector(
-                    onHorizontalDragEnd: (details) {
-                      if (_swipedCardIndex == -1) {
-                        if (details.primaryVelocity! < 0) {
-                          flipCard(index);
-                        }
-                      } else {
-                        if (details.primaryVelocity! > 0) {
-                          flipCard(index);
-                        }
-                      }
-                    },
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: Text("Card Options"),
-                          actions: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(Colors.green)),
-                                onPressed: () {
-                                  flipCard(index);
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Swipe")),
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(Colors.red)),
-                                onPressed: () {
-                                  cardDelete(cardData.id);
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Delete")),
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, "/editCard",
-                                      arguments: {
-                                        "cardName": cardData['cardName'],
-                                        "cardCvv": cardData['cardCvv'],
-                                        "cardExp": cardData['cardExp'],
-                                        "cardHolder": cardData['cardHolder'],
-                                        "cardNumber": cardData['cardNumber'],
-                                        "cardPin": cardData['cardPin'],
-                                        "UId": cardData.id,
-                                      });
-                                },
-                                child: Text("Edit")),
-                            // ElevatedButton(
-                            //     onPressed: () {
-                            //       likeCard(cardData.id);
-                            //       Navigator.pop(context);
-                            //     },
-                            //     child: Text("Like")),
-                          ],
-                        ),
-                      );
-                    },
-                    child: AnimatedBuilder(
-                      animation: _animation,
-                      builder: (context, child) {
-                        final value = _animation.value;
-                        final frontOpacity =
-                            _swipedCardIndex == index ? 1.0 - value : 1.0;
-                        final backOpacity =
-                            _swipedCardIndex == index ? value : 0.0;
-                        return Container(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Stack(
-                            children: [
-                              Opacity(
-                                opacity: frontOpacity,
-                                child: buildFrontCard(cardData, cardType),
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("likedCards")
+                        .where('cardId', isEqualTo: cardData.id)
+                        .where('userId', isEqualTo: user!.email)
+                        .snapshots(),
+                    builder: (context, likedSnapshot) {
+                      if (likedSnapshot.hasData &&
+                          likedSnapshot.data!.docs.isNotEmpty) {
+                        return GestureDetector(
+                          onHorizontalDragEnd: (details) {
+                            if (_swipedCardIndex == -1) {
+                              if (details.primaryVelocity! < 0) {
+                                flipCard(index);
+                              }
+                            } else {
+                              if (details.primaryVelocity! > 0) {
+                                flipCard(index);
+                              }
+                            }
+                          },
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text("Card Options"),
+                                actions: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.green),
+                                    ),
+                                    onPressed: () {
+                                      flipCard(index);
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Swipe"),
+                                  ),
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll(Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      cardDelete(cardData.id);
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Delete"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushNamed(context, "/editCard",
+                                          arguments: {
+                                            "cardName": cardData['cardName'],
+                                            "cardCvv": cardData['cardCvv'],
+                                            "cardExp": cardData['cardExp'],
+                                            "cardHolder":
+                                                cardData['cardHolder'],
+                                            "cardNumber":
+                                                cardData['cardNumber'],
+                                            "cardPin": cardData['cardPin'],
+                                            "UId": cardData.id,
+                                          });
+                                    },
+                                    child: Text("Edit"),
+                                  ),
+                                ],
                               ),
-                              Opacity(
-                                opacity: backOpacity,
-                                child: buildBackCard(cardData),
-                              ),
-                            ],
+                            );
+                          },
+                          child: AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) {
+                              final value = _animation.value;
+                              final frontOpacity =
+                                  _swipedCardIndex == index ? 1.0 - value : 1.0;
+                              final backOpacity =
+                                  _swipedCardIndex == index ? value : 0.0;
+                              return Container(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Stack(
+                                  children: [
+                                    Opacity(
+                                      opacity: frontOpacity,
+                                      child: buildFrontCard(cardData, cardType),
+                                    ),
+                                    Opacity(
+                                      opacity: backOpacity,
+                                      child: buildBackCard(cardData),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         );
-                      },
-                    ),
+                      } else {
+                        // Card is not liked, so don't show it
+                        return Container();
+                      }
+                    },
                   );
                 }
               }
