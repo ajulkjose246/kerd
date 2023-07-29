@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kerd/screen/home/likedCard.dart';
 import 'package:kerd/screen/home/listcard.dart';
+import 'package:kerd/screen/home/profile.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,8 +22,7 @@ class _HomeScreenState extends State<HomeScreen>
   List homeScreens = const [
     listScreen(),
     likedScreen(),
-    Text("3"),
-    Text("4"),
+    profileScreen(),
   ];
 
   @override
@@ -94,13 +94,6 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Icon(Icons.favorite_border),
             title: Text("Liked"),
             selectedColor: Colors.pink,
-          ),
-
-          /// Search
-          SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Search"),
-            selectedColor: Colors.orange,
           ),
 
           /// Profile
