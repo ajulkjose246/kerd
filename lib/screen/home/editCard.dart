@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quickalert/quickalert.dart';
 
 class editCardScreen extends StatefulWidget {
@@ -68,8 +67,13 @@ class _editCardScreenState extends State<editCardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Add Card"),
+        backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+        title: Text("Edit Card"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10), // You can adjust the radius here
+          ),
+        ),
       ),
       body: ListView(children: [
         Center(
@@ -89,10 +93,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'Card Name',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -107,10 +112,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'Card Number',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -127,10 +133,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'Cardholder Name',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -145,10 +152,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'Expiry Date',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -163,10 +171,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'Card Pin',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -181,10 +190,11 @@ class _editCardScreenState extends State<editCardScreen> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     width: 2,
-                    color: Colors.green), // Replace with your desired color
+                    color: Color.fromRGBO(
+                        38, 38, 38, 1)), // Replace with your desired color
               ),
               labelText: 'CVV',
-              labelStyle: TextStyle(color: Colors.green),
+              labelStyle: TextStyle(color: Color.fromRGBO(38, 38, 38, 1)),
               border: OutlineInputBorder(),
             ),
           ),
@@ -197,7 +207,8 @@ class _editCardScreenState extends State<editCardScreen> {
             },
             child: Text("Update Card"),
             style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.green)),
+                backgroundColor:
+                    MaterialStatePropertyAll(Color.fromRGBO(38, 38, 38, 1))),
           ),
         ),
       ]),

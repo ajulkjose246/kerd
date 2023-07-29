@@ -38,12 +38,6 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void usrLogout() async {
-    FirebaseAuth.instance.signOut();
-    checkCurrentUser();
-    Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
-  }
-
   void addCard() {
     print("card Added");
     Navigator.pushNamed(context, '/addCard');
@@ -54,20 +48,15 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: Color.fromRGBO(230, 234, 237, 1),
       appBar: AppBar(
-          backgroundColor: Color.fromRGBO(38, 38, 38, 1),
-          leading: Icon(Icons.credit_card),
-          title: Text("KERD"),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10), // You can adjust the radius here
-            ),
+        backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+        leading: Icon(Icons.credit_card),
+        title: Text("KERD"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10), // You can adjust the radius here
           ),
-          actions: [
-            IconButton(
-              onPressed: usrLogout,
-              icon: Icon(Icons.exit_to_app),
-            ),
-          ]),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: addCard,
         child: Icon(Icons.add_card),

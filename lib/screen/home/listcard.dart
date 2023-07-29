@@ -100,7 +100,7 @@ class _listScreenState extends State<listScreen>
 
   void cardDelete(id) {
     cards.doc(id).delete();
-    Navigator.pop(context, '/auth');
+    Navigator.pushNamed(context, "/");
   }
 
   Future<void> likeCard(String cardId) async {
@@ -255,11 +255,12 @@ class _listScreenState extends State<listScreen>
                     fontSize: 20,
                     color: Colors.white),
               ),
+              SizedBox(width: 10),
               IconButton(
                 onPressed: () {
                   copyContent(cardData['cardNumber']);
                 },
-                icon: Icon(Icons.copy, size: 25, color: Colors.white),
+                icon: Icon(Icons.copy, color: Colors.white),
               ),
             ],
           ),
@@ -305,9 +306,11 @@ class _listScreenState extends State<listScreen>
                       ),
                       IconButton(
                         onPressed: () {
+                          print("hao");
                           copyContent(cardData['cardExp']);
                         },
-                        icon: Icon(Icons.copy, size: 20, color: Colors.white),
+                        icon: const Icon(Icons.copy,
+                            size: 20, color: Colors.white),
                       ),
                     ],
                   ),
@@ -329,7 +332,7 @@ class _listScreenState extends State<listScreen>
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Color.fromARGB(255, 33, 30, 30),
               Color.fromARGB(255, 9, 9, 9),
@@ -392,42 +395,44 @@ class _listScreenState extends State<listScreen>
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        likeCard(cardData.id);
-                      },
-                      icon: Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
-                      )),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/editCard", arguments: {
-                          "cardName": cardData['cardName'],
-                          "cardCvv": cardData['cardCvv'],
-                          "cardExp": cardData['cardExp'],
-                          "cardHolder": cardData['cardHolder'],
-                          "cardNumber": cardData['cardNumber'],
-                          "cardPin": cardData['cardPin'],
-                          "UId": cardData.id,
-                        });
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.blue,
-                      )),
-                  IconButton(
-                      onPressed: () {
-                        cardDelete(cardData.id);
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      )),
-                ],
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          likeCard(cardData.id);
+                        },
+                        icon: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/editCard", arguments: {
+                            "cardName": cardData['cardName'],
+                            "cardCvv": cardData['cardCvv'],
+                            "cardExp": cardData['cardExp'],
+                            "cardHolder": cardData['cardHolder'],
+                            "cardNumber": cardData['cardNumber'],
+                            "cardPin": cardData['cardPin'],
+                            "UId": cardData.id,
+                          });
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          cardDelete(cardData.id);
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        )),
+                  ],
+                ),
               ),
             )
           ],
