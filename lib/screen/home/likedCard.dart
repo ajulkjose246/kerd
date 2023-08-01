@@ -415,8 +415,8 @@ class _likedScreenState extends State<likedScreen>
                         likeCard(cardData.id);
                       },
                       icon: Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
+                        Icons.favorite,
+                        color: Colors.red,
                       )),
                   IconButton(
                       onPressed: () {

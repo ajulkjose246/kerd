@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen>
               backgroundColor: Color.fromRGBO(38, 38, 38, 1),
               shape: const CircleBorder(side: BorderSide(width: 2)),
             )
-          : Container(),
+          : null,
       body: homeScreens.elementAt(_currentIndex),
       bottomNavigationBar: SalomonBottomBar(
         // backgroundColor: Color.fromRGBO(38, 38, 38, 1),

@@ -20,6 +20,7 @@ class _listScreenState extends State<listScreen>
   late AnimationController _animationController;
   late Animation<double> _animation;
   int _swipedCardIndex = -1;
+  Map<String, bool> likedStatusMap = {};
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _listScreenState extends State<listScreen>
       duration: Duration(milliseconds: 500),
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+    fetchLikedStatus();
   }
 
   @override
@@ -126,6 +128,29 @@ class _listScreenState extends State<listScreen>
       };
       await FirebaseFirestore.instance.collection('likedCards').add(data);
     }
+    fetchLikedStatus(); // Update liked status after liking/unliking
+  }
+
+  void fetchLikedStatus() async {
+    final currentUserEmail = user!.email;
+    final querySnapshot =
+        await FirebaseFirestore.instance.collection('likedCards').get();
+
+    Map<String, bool> newLikedStatusMap = {};
+
+    for (DocumentSnapshot doc in querySnapshot.docs) {
+      final cardId = doc.get('cardId');
+      final userId = doc.get('userId');
+      if (userId == currentUserEmail) {
+        newLikedStatusMap[cardId] = true;
+      } else {
+        newLikedStatusMap[cardId] = false;
+      }
+    }
+
+    setState(() {
+      likedStatusMap = newLikedStatusMap;
+    });
   }
 
   void flipCard(int index) {
@@ -324,6 +349,7 @@ class _listScreenState extends State<listScreen>
   }
 
   Widget buildBackCard(cardData) {
+    final bool isLiked = likedStatusMap[cardData.id] ?? false;
     return AnimatedOpacity(
       opacity: _swipedCardIndex >= 0 ? 1.0 : 0.0,
       duration: Duration(milliseconds: 500),
@@ -404,8 +430,8 @@ class _listScreenState extends State<listScreen>
                           likeCard(cardData.id);
                         },
                         icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
+                          Icons.favorite,
+                          color: (isLiked) ? Colors.red : Colors.white,
                         )),
                     IconButton(
                         onPressed: () {
