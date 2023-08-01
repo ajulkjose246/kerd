@@ -63,9 +63,9 @@ class _listScreenState extends State<listScreen>
         CollectionReference userCards =
             FirebaseFirestore.instance.collection("cards");
 
-        // Query and delete all documents where the 'user' field matches the current user's email
+        // Query and delete all documents where the 'user' field matches the current user's ID
         QuerySnapshot snapshot =
-            await userCards.where("user", isEqualTo: currentUser.email).get();
+            await userCards.where("user", isEqualTo: currentUser.uid).get();
         for (DocumentSnapshot doc in snapshot.docs) {
           await doc.reference.delete();
         }
@@ -105,11 +105,11 @@ class _listScreenState extends State<listScreen>
   }
 
   Future<void> likeCard(String cardId) async {
-    final currentUserEmail = user!.email;
+    final currentUserUid = user!.uid;
     final querySnapshot = await FirebaseFirestore.instance
         .collection('likedCards')
         .where('cardId', isEqualTo: cardId)
-        .where('userId', isEqualTo: currentUserEmail)
+        .where('userId', isEqualTo: currentUserUid)
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -123,7 +123,7 @@ class _listScreenState extends State<listScreen>
       // Card is not liked, so add it
       final data = {
         'cardId': cardId,
-        'userId': currentUserEmail,
+        'userId': currentUserUid,
       };
       await FirebaseFirestore.instance.collection('likedCards').add(data);
     }
@@ -136,7 +136,7 @@ class _listScreenState extends State<listScreen>
       return;
     }
 
-    final currentUserEmail = user!.email;
+    final currentUserUid = user!.uid;
     final querySnapshot =
         await FirebaseFirestore.instance.collection('likedCards').get();
 
@@ -145,7 +145,7 @@ class _listScreenState extends State<listScreen>
     for (DocumentSnapshot doc in querySnapshot.docs) {
       final cardId = doc.get('cardId');
       final userId = doc.get('userId');
-      if (userId == currentUserEmail) {
+      if (userId == currentUserUid) {
         newLikedStatusMap[cardId] = true;
       } else {
         newLikedStatusMap[cardId] = false;
@@ -186,8 +186,11 @@ class _listScreenState extends State<listScreen>
                     itemBuilder: (context, index) {
                       final cardData = cards[index];
                       if (_currentUser != null) {
+                        print("poda0");
                         if (user != null) {
-                          if (cardData['user'] == user!.email) {
+                          print(cardData['user']);
+                          print(user!.uid);
+                          if (cardData['user'] == user!.uid) {
                             String cardType =
                                 getCardType(cardData['cardNumber']);
                             return GestureDetector(

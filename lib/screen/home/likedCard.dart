@@ -61,9 +61,9 @@ class _likedScreenState extends State<likedScreen>
         CollectionReference userCards =
             FirebaseFirestore.instance.collection("cards");
 
-        // Query and delete all documents where the 'user' field matches the current user's email
+        // Query and delete all documents where the 'user' field matches the current user's Id
         QuerySnapshot snapshot =
-            await userCards.where("user", isEqualTo: currentUser.email).get();
+            await userCards.where("user", isEqualTo: currentUser.uid).get();
         for (DocumentSnapshot doc in snapshot.docs) {
           await doc.reference.delete();
         }
@@ -104,11 +104,11 @@ class _likedScreenState extends State<likedScreen>
   }
 
   Future<void> likeCard(String cardId) async {
-    final currentUserEmail = user!.email;
+    final currentUserUid = user!.uid;
     final querySnapshot = await FirebaseFirestore.instance
         .collection('likedCards')
         .where('cardId', isEqualTo: cardId)
-        .where('userId', isEqualTo: currentUserEmail)
+        .where('userId', isEqualTo: currentUserUid)
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -122,7 +122,7 @@ class _likedScreenState extends State<likedScreen>
       // Card is not liked, so add it
       final data = {
         'cardId': cardId,
-        'userId': currentUserEmail,
+        'userId': currentUserUid,
       };
       await FirebaseFirestore.instance.collection('likedCards').add(data);
     }
@@ -150,13 +150,13 @@ class _likedScreenState extends State<likedScreen>
             itemBuilder: (context, index) {
               final cardData = cards[index];
               if (_currentUser != null) {
-                if (cardData['user'] == user!.email) {
+                if (cardData['user'] == user!.uid) {
                   String cardType = getCardType(cardData['cardNumber']);
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection("likedCards")
                         .where('cardId', isEqualTo: cardData.id)
-                        .where('userId', isEqualTo: user!.email)
+                        .where('userId', isEqualTo: user!.uid)
                         .snapshots(),
                     builder: (context, likedSnapshot) {
                       if (likedSnapshot.hasData &&

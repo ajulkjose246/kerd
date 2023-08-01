@@ -32,7 +32,7 @@ class _addCardScreenState extends State<addCardScreen> {
         'cardNumber': cardNumber.text,
         'cardPin': cardPin.text,
         'cardCvv': cardCvv.text,
-        'user': user!.email,
+        'user': user!.uid,
       };
       cards.add(data).then((_) {
         // Insertion successful
