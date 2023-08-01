@@ -42,7 +42,7 @@ class _addCardScreenState extends State<addCardScreen> {
           type: QuickAlertType.success,
           text: "Card Added successful",
         ).then((value) {
-          Navigator.pushNamedAndRemoveUntil(context, "/auth", (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
         });
       }).catchError((error) {
         // Insertion failed

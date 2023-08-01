@@ -102,7 +102,6 @@ class _listScreenState extends State<listScreen>
 
   void cardDelete(id) {
     cards.doc(id).delete();
-    Navigator.pushNamed(context, "/");
   }
 
   Future<void> likeCard(String cardId) async {
