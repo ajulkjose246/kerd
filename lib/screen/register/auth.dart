@@ -14,7 +14,7 @@ class _authScreenState extends State<authScreen> {
   }
 
   void checkUser() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 5));
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -34,6 +34,13 @@ class _authScreenState extends State<authScreen> {
             Text(
               "KERD",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Downloading Data ....",
+              style: TextStyle(fontSize: 15),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),

@@ -132,6 +132,11 @@ class _listScreenState extends State<listScreen>
   }
 
   void fetchLikedStatus() async {
+    if (user == null) {
+      // If user is null, do not proceed further.
+      return;
+    }
+
     final currentUserEmail = user!.email;
     final querySnapshot =
         await FirebaseFirestore.instance.collection('likedCards').get();
@@ -165,63 +170,75 @@ class _listScreenState extends State<listScreen>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection("cards").snapshots(),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final cards = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: cards.length,
-            itemBuilder: (context, index) {
-              final cardData = cards[index];
-              if (_currentUser != null) {
-                if (cardData['user'] == user!.email) {
-                  String cardType = getCardType(cardData['cardNumber']);
-                  return GestureDetector(
-                    onHorizontalDragEnd: (details) {
-                      if (_swipedCardIndex == -1) {
-                        if (details.primaryVelocity! < 0) {
-                          flipCard(index);
-                        }
-                      } else {
-                        if (details.primaryVelocity! > 0) {
-                          flipCard(index);
-                        }
-                      }
+        if (snapshot.connectionState == ConnectionState.active) {
+          final currentUser = snapshot.data;
+          if (currentUser != null) {
+            return StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection("cards").snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final cards = snapshot.data!.docs;
+                  return ListView.builder(
+                    itemCount: cards.length,
+                    itemBuilder: (context, index) {
+                      final cardData = cards[index];
+                      String cardType = getCardType(cardData['cardNumber']);
+                      return GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          if (_swipedCardIndex == -1) {
+                            if (details.primaryVelocity! < 0) {
+                              flipCard(index);
+                            }
+                          } else {
+                            if (details.primaryVelocity! > 0) {
+                              flipCard(index);
+                            }
+                          }
+                        },
+                        child: AnimatedBuilder(
+                          animation: _animation,
+                          builder: (context, child) {
+                            final value = _animation.value;
+                            final frontOpacity =
+                                _swipedCardIndex == index ? 1.0 - value : 1.0;
+                            final backOpacity =
+                                _swipedCardIndex == index ? value : 0.0;
+                            return Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Stack(
+                                children: [
+                                  Opacity(
+                                    opacity: frontOpacity,
+                                    child: buildFrontCard(cardData, cardType),
+                                  ),
+                                  Opacity(
+                                    opacity: backOpacity,
+                                    child: buildBackCard(cardData),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
                     },
-                    child: AnimatedBuilder(
-                      animation: _animation,
-                      builder: (context, child) {
-                        final value = _animation.value;
-                        final frontOpacity =
-                            _swipedCardIndex == index ? 1.0 - value : 1.0;
-                        final backOpacity =
-                            _swipedCardIndex == index ? value : 0.0;
-                        return Container(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Stack(
-                            children: [
-                              Opacity(
-                                opacity: frontOpacity,
-                                child: buildFrontCard(cardData, cardType),
-                              ),
-                              Opacity(
-                                opacity: backOpacity,
-                                child: buildBackCard(cardData),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
                   );
                 }
-              }
-              return Container();
-            },
-          );
+                return Container();
+              },
+            );
+          } else {
+            // User is not logged in, you can show a login screen or any other UI here.
+            return Container();
+          }
+        } else {
+          // Connection state is still waiting, return a loading indicator or placeholder.
+          return CircularProgressIndicator();
         }
-        return Container();
       },
     );
   }
