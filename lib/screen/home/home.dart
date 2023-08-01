@@ -57,12 +57,14 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addCard,
-        child: Icon(Icons.add_card),
-        backgroundColor: Color.fromRGBO(38, 38, 38, 1),
-        shape: const CircleBorder(side: BorderSide(width: 2)),
-      ),
+      floatingActionButton: (_currentIndex == 0)
+          ? FloatingActionButton(
+              onPressed: addCard,
+              child: Icon(Icons.add_card),
+              backgroundColor: Color.fromRGBO(38, 38, 38, 1),
+              shape: const CircleBorder(side: BorderSide(width: 2)),
+            )
+          : Container(),
       body: homeScreens.elementAt(_currentIndex),
       bottomNavigationBar: SalomonBottomBar(
         // backgroundColor: Color.fromRGBO(38, 38, 38, 1),
