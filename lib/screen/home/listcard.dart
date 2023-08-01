@@ -185,45 +185,54 @@ class _listScreenState extends State<listScreen>
                     itemCount: cards.length,
                     itemBuilder: (context, index) {
                       final cardData = cards[index];
-                      String cardType = getCardType(cardData['cardNumber']);
-                      return GestureDetector(
-                        onHorizontalDragEnd: (details) {
-                          if (_swipedCardIndex == -1) {
-                            if (details.primaryVelocity! < 0) {
-                              flipCard(index);
-                            }
-                          } else {
-                            if (details.primaryVelocity! > 0) {
-                              flipCard(index);
-                            }
-                          }
-                        },
-                        child: AnimatedBuilder(
-                          animation: _animation,
-                          builder: (context, child) {
-                            final value = _animation.value;
-                            final frontOpacity =
-                                _swipedCardIndex == index ? 1.0 - value : 1.0;
-                            final backOpacity =
-                                _swipedCardIndex == index ? value : 0.0;
-                            return Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Stack(
-                                children: [
-                                  Opacity(
-                                    opacity: frontOpacity,
-                                    child: buildFrontCard(cardData, cardType),
-                                  ),
-                                  Opacity(
-                                    opacity: backOpacity,
-                                    child: buildBackCard(cardData),
-                                  ),
-                                ],
+                      if (_currentUser != null) {
+                        if (user != null) {
+                          if (cardData['user'] == user!.email) {
+                            String cardType =
+                                getCardType(cardData['cardNumber']);
+                            return GestureDetector(
+                              onHorizontalDragEnd: (details) {
+                                if (_swipedCardIndex == -1) {
+                                  if (details.primaryVelocity! < 0) {
+                                    flipCard(index);
+                                  }
+                                } else {
+                                  if (details.primaryVelocity! > 0) {
+                                    flipCard(index);
+                                  }
+                                }
+                              },
+                              child: AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) {
+                                  final value = _animation.value;
+                                  final frontOpacity = _swipedCardIndex == index
+                                      ? 1.0 - value
+                                      : 1.0;
+                                  final backOpacity =
+                                      _swipedCardIndex == index ? value : 0.0;
+                                  return Container(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Stack(
+                                      children: [
+                                        Opacity(
+                                          opacity: frontOpacity,
+                                          child: buildFrontCard(
+                                              cardData, cardType),
+                                        ),
+                                        Opacity(
+                                          opacity: backOpacity,
+                                          child: buildBackCard(cardData),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
                             );
-                          },
-                        ),
-                      );
+                          }
+                        }
+                      }
                     },
                   );
                 }
