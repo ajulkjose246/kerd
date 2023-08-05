@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 import 'cardType.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -23,6 +24,7 @@ class _listScreenState extends State<listScreen>
   int _swipedCardIndex = -1;
   Map<String, bool> likedStatusMap = {};
   late bool networkStatuscode;
+  final _myBox = Hive.box('mybox');
 
   @override
   void initState() {
@@ -187,6 +189,32 @@ class _listScreenState extends State<listScreen>
     }
   }
 
+  Future<void> checkHive(cardData) async {
+    final _myBox =
+        await Hive.openBox('myBox'); // Replace 'myBox' with your box name
+    try {
+      if (!_myBox.containsKey(cardData.id)) {
+        var cardDetails = {
+          "cardId": cardData.id,
+          "cardName": cardData["cardName"],
+          "cardCvv": cardData["cardCvv"],
+          "cardExp": cardData["cardExp"],
+          "cardHolder": cardData["cardHolder"],
+          "cardNumber": cardData["cardNumber"],
+          "cardPin": cardData["cardPin"],
+          "user": cardData["user"],
+        };
+        print("added");
+        await _myBox.put(cardData.id, cardDetails);
+      } else {
+        print("Alreday added");
+      }
+    } catch (e) {
+      print('Error saving data to Hive: $e');
+      // Handle the error, e.g., show an error message or perform other actions.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -211,8 +239,10 @@ class _listScreenState extends State<listScreen>
                           print(cardData['user']);
                           print(user!.uid);
                           if (cardData['user'] == user!.uid) {
+                            checkHive(cardData);
                             String cardType =
                                 getCardType(cardData['cardNumber']);
+
                             return GestureDetector(
                               onHorizontalDragEnd: (details) {
                                 if (_swipedCardIndex == -1) {
