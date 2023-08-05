@@ -66,13 +66,11 @@ class _profileScreenState extends State<profileScreen> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(
-                        "https://cdn2.iconfinder.com/data/icons/avatars-99/62/avatar-370-456322-512.png"),
-                  ),
-                ),
+                    padding: EdgeInsets.only(top: 10),
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage("assets/profile.png"),
+                    )),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: Text(

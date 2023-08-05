@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'cardType.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class listScreen extends StatefulWidget {
   const listScreen({Key? key}) : super(key: key);
@@ -21,10 +22,12 @@ class _listScreenState extends State<listScreen>
   late Animation<double> _animation;
   int _swipedCardIndex = -1;
   Map<String, bool> likedStatusMap = {};
+  late bool networkStatuscode;
 
   @override
   void initState() {
     super.initState();
+    networkStatus();
     checkCurrentUser();
     _animationController = AnimationController(
       vsync: this,
@@ -152,9 +155,11 @@ class _listScreenState extends State<listScreen>
       }
     }
 
-    setState(() {
-      likedStatusMap = newLikedStatusMap;
-    });
+    if (mounted) {
+      setState(() {
+        likedStatusMap = newLikedStatusMap;
+      });
+    }
   }
 
   void flipCard(int index) {
@@ -164,6 +169,21 @@ class _listScreenState extends State<listScreen>
     } else {
       _animationController.forward();
       _swipedCardIndex = index;
+    }
+  }
+
+  Future<void> networkStatus() async {
+    final ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi ||
+        connectivityResult == ConnectivityResult.ethernet ||
+        connectivityResult == ConnectivityResult.vpn) {
+      // I am connected to a mobile network.
+      networkStatuscode = true;
+    } else {
+      // I am not connected to any network.
+      networkStatuscode = false;
     }
   }
 
@@ -295,10 +315,7 @@ class _listScreenState extends State<listScreen>
             ],
           ),
           SizedBox(height: 1),
-          Image.network(
-            height: 50, // Set the desired height
-            "https://firebasestorage.googleapis.com/v0/b/kerd-app.appspot.com/o/atm.png?alt=media&token=5f37b555-00ff-42a6-830a-5379f1fb4538",
-          ),
+          Image.asset(height: 50, "assets/atm.png"),
           Row(
             children: [
               Text(
