@@ -23,7 +23,7 @@ class _listScreenState extends State<listScreen>
   late Animation<double> _animation;
   int _swipedCardIndex = -1;
   Map<String, bool> likedStatusMap = {};
-  late bool networkStatuscode;
+  bool networkStatuscode = true;
   final _myBox = Hive.box('mybox');
 
   @override
@@ -217,91 +217,146 @@ class _listScreenState extends State<listScreen>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final currentUser = snapshot.data;
-          if (currentUser != null) {
-            return StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection("cards").snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final cards = snapshot.data!.docs;
-                  return ListView.builder(
-                    itemCount: cards.length,
-                    itemBuilder: (context, index) {
-                      final cardData = cards[index];
-                      if (_currentUser != null) {
-                        print("poda0");
-                        if (user != null) {
-                          print(cardData['user']);
-                          print(user!.uid);
-                          if (cardData['user'] == user!.uid) {
-                            checkHive(cardData);
-                            String cardType =
-                                getCardType(cardData['cardNumber']);
+    if (networkStatuscode) {
+      return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final currentUser = snapshot.data;
+            if (currentUser != null) {
+              return StreamBuilder<QuerySnapshot>(
+                stream:
+                    FirebaseFirestore.instance.collection("cards").snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final cards = snapshot.data!.docs;
+                    return ListView.builder(
+                      itemCount: cards.length,
+                      itemBuilder: (context, index) {
+                        final cardData = cards[index];
+                        if (_currentUser != null) {
+                          print("poda0");
+                          if (user != null) {
+                            print(cardData['user']);
+                            print(user!.uid);
+                            if (cardData['user'] == user!.uid) {
+                              checkHive(cardData);
+                              String cardType =
+                                  getCardType(cardData['cardNumber']);
 
-                            return GestureDetector(
-                              onHorizontalDragEnd: (details) {
-                                if (_swipedCardIndex == -1) {
-                                  if (details.primaryVelocity! < 0) {
-                                    flipCard(index);
+                              return GestureDetector(
+                                onHorizontalDragEnd: (details) {
+                                  if (_swipedCardIndex == -1) {
+                                    if (details.primaryVelocity! < 0) {
+                                      flipCard(index);
+                                    }
+                                  } else {
+                                    if (details.primaryVelocity! > 0) {
+                                      flipCard(index);
+                                    }
                                   }
-                                } else {
-                                  if (details.primaryVelocity! > 0) {
-                                    flipCard(index);
-                                  }
-                                }
-                              },
-                              child: AnimatedBuilder(
-                                animation: _animation,
-                                builder: (context, child) {
-                                  final value = _animation.value;
-                                  final frontOpacity = _swipedCardIndex == index
-                                      ? 1.0 - value
-                                      : 1.0;
-                                  final backOpacity =
-                                      _swipedCardIndex == index ? value : 0.0;
-                                  return Container(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Stack(
-                                      children: [
-                                        Opacity(
-                                          opacity: frontOpacity,
-                                          child: buildFrontCard(
-                                              cardData, cardType),
-                                        ),
-                                        Opacity(
-                                          opacity: backOpacity,
-                                          child: buildBackCard(cardData),
-                                        ),
-                                      ],
-                                    ),
-                                  );
                                 },
-                              ),
-                            );
+                                child: AnimatedBuilder(
+                                  animation: _animation,
+                                  builder: (context, child) {
+                                    final value = _animation.value;
+                                    final frontOpacity =
+                                        _swipedCardIndex == index
+                                            ? 1.0 - value
+                                            : 1.0;
+                                    final backOpacity =
+                                        _swipedCardIndex == index ? value : 0.0;
+                                    return Container(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Stack(
+                                        children: [
+                                          Opacity(
+                                            opacity: frontOpacity,
+                                            child: buildFrontCard(
+                                                cardData, cardType),
+                                          ),
+                                          Opacity(
+                                            opacity: backOpacity,
+                                            child: buildBackCard(cardData),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
                           }
                         }
-                      }
-                    },
-                  );
-                }
-                return Container();
-              },
-            );
+                      },
+                    );
+                  }
+                  return Container();
+                },
+              );
+            } else {
+              // User is not logged in, you can show a login screen or any other UI here.
+              return Container();
+            }
           } else {
-            // User is not logged in, you can show a login screen or any other UI here.
-            return Container();
+            // Connection state is still waiting, return a loading indicator or placeholder.
+            return CircularProgressIndicator();
           }
-        } else {
-          // Connection state is still waiting, return a loading indicator or placeholder.
-          return CircularProgressIndicator();
-        }
-      },
-    );
+        },
+      );
+    } else {
+      return ListView.builder(
+        itemCount: _myBox.length,
+        itemBuilder: (context, index) {
+          final allData = _myBox.values;
+          for (var cardData in allData) {
+            if (cardData["user"] == user!.uid) {
+              // print("cardData");
+              // print(cardData);
+              // checkHive(cardData);
+              String cardType = getCardType(cardData['cardNumber']);
+              return GestureDetector(
+                onHorizontalDragEnd: (details) {
+                  if (_swipedCardIndex == -1) {
+                    if (details.primaryVelocity! < 0) {
+                      flipCard(index);
+                    }
+                  } else {
+                    if (details.primaryVelocity! > 0) {
+                      flipCard(index);
+                    }
+                  }
+                },
+                child: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    final value = _animation.value;
+                    final frontOpacity =
+                        _swipedCardIndex == index ? 1.0 - value : 1.0;
+                    final backOpacity = _swipedCardIndex == index ? value : 0.0;
+                    return Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: frontOpacity,
+                            child: buildFrontCard(cardData, cardType),
+                          ),
+                          Opacity(
+                            opacity: backOpacity,
+                            child: buildBackCard(cardData),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+          }
+        },
+      );
+    }
   }
 
   Widget buildFrontCard(cardData, cardType) {
@@ -424,7 +479,12 @@ class _listScreenState extends State<listScreen>
   }
 
   Widget buildBackCard(cardData) {
-    final bool isLiked = likedStatusMap[cardData.id] ?? false;
+    bool isLiked = false;
+    if (networkStatuscode) {
+      isLiked = likedStatusMap[cardData.id] ?? false;
+    } else {
+      isLiked = likedStatusMap[cardData["cardId"]] ?? false;
+    }
     return AnimatedOpacity(
       opacity: _swipedCardIndex >= 0 ? 1.0 : 0.0,
       duration: Duration(milliseconds: 500),
