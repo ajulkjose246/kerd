@@ -1,16 +1,20 @@
-# kerd
+<br/>
+<p align="center">
+  <h3 align="center">Kerd</h3>
 
-A new Flutter project.
+  <p align="center">
+    Your Ultimate Card Holder App for Android, Crafted with Flutter
+    <br/>
+    <br/>
+  </p>
+</p>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## About The Project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Kerd is a sleek and intuitive card holder app designed for Android, developed using Flutter technology. With its user-friendly interface and seamless navigation, Kerd simplifies the management of various cards, such as credit cards, loyalty cards, and identification cards, all in one convenient platform. The app offers features like quick card access, customizable card categories, and a secure digital wallet, ensuring users have easy and organized access to their essential cards. Kerd aims to enhance user convenience by streamlining the card-carrying experience, making it a must-have for individuals seeking a modern and efficient solution for card management on their Android devices.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Authors
+
+* **Ajul K Jose** - *Web Developer* - [Ajul K Jose](https://www.ajulkjose.in)
