@@ -8,9 +8,6 @@ Kerd is a sleek and intuitive card holder application tailored for Android users
 - **Customizable Card Categories**: Organize your cards into personalized categories for easy management.
 - **Secure Digital Wallet**: Keep your card information protected in a digital vault.
 
-## Screenshots
-
-(Insert screenshots of the app here)
 
 ## Getting Started
 
